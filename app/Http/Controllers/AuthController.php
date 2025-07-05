@@ -17,26 +17,6 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
-    public function me() 
-    {
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-        $user->load('division');
-
-        return response()->json([
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'division' => $user->division ? [
-                'id' => $user->division->id,
-                'name' => $user->division->name,
-            ] : null,
-            'role' => $user->getRoleNames(),
-            'permissions' => $user->getAllPermissions()->pluck('name'),
-        ]);
-
-    }
-
     public function register(Request $request) {
         $request->validate([
             'name' => 'required|string|max:255',
