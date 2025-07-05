@@ -77,6 +77,35 @@ class AuthController extends Controller
         ]);
     }
 
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed'
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'status' => 'Error',
+                'message' => 'current password is incorrect'
+            ], 400);
+        }
+
+        // $user->update([
+        //     'password' => Hash::make($request->new_password),
+        // ]);
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json([
+            'status' => 'Success',
+            'message' => 'Password cahnged successfully'
+        ]);
+    }
+
     public function logout() {
         // get token
         $token = JWTAuth::getToken();
