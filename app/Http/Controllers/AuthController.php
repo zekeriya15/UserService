@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Division;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,6 +15,26 @@ class AuthController extends Controller
 {
     public function __construct() {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
+
+    public function me() 
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $user->load('division');
+
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'division' => $user->division ? [
+                'id' => $user->division->id,
+                'name' => $user->division->name,
+            ] : null,
+            'role' => $user->getRoleNames(),
+            'permissions' => $user->getAllPermissions()->pluck('name'),
+        ]);
+
     }
 
     public function register(Request $request) {
