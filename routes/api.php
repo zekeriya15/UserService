@@ -16,3 +16,6 @@ Route::middleware('auth:api')->group(function() {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+Route::middleware(['auth:api', 'role:superadmin|HR'])->group(function() {
+    Route::post('/users', [UserController::class, 'store']);
+});

@@ -17,24 +17,24 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
-    public function register(Request $request) {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|max:255|email|unique:users',
-            'password' => 'required|string|min:8|confirmed'
-        ]);
+    // public function register(Request $request) {
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|string|max:255|email|unique:users',
+    //         'password' => 'required|string|min:8|confirmed'
+    //     ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+    //     $user = User::create([
+    //         'name' => $request->name,
+    //         'email' => $request->email,
+    //         'password' => Hash::make($request->password)
+    //     ]);
 
-        return response()->json([
-            'message' => 'User successfully created',
-            'user' => $user
-        ]);
-    }
+    //     return response()->json([
+    //         'message' => 'User successfully created',
+    //         'user' => $user
+    //     ]);
+    // }
 
     public function login(Request $request) {
         $request->validate([
