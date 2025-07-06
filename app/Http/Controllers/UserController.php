@@ -25,7 +25,7 @@ class UserController extends Controller
                 'id' => $user->division->id,
                 'name' => $user->division->name,
             ] : null,
-            'role' => $user->getRoleNames(),
+            'roles' => $user->getRoleNames(),
             'permissions' => $user->getAllPermissions()->pluck('name'),
         ]);
     }
